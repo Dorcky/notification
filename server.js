@@ -39,20 +39,26 @@ app.post('/subscribe', (req, res) => {
 });
 
 app.post('/send-notification', (req, res) => {
+    const { id } = req.body;
+    const subscription = subscriptions.get(id);
+    
+    if (!subscription) {
+        return res.status(404).json({ message: 'Abonnement non trouvé' });
+    }
+    
     const payload = JSON.stringify({
         title: "Rappel de sommeil",
         body: "Il est temps d'aller se coucher !"
     });
 
-    subscriptions.set(id, newSubscription);
-
-    // Démarrer l'intervalle pour cet abonnement
-    startNotificationInterval(id);
-
-    res.status(201).json({ 
-        message: 'Abonnement enregistré avec succès !',
-        id: id
-    });
+    webPush.sendNotification(subscription.subscription, payload)
+        .then(() => {
+            res.status(200).json({ message: 'Notification envoyée avec succès' });
+        })
+        .catch(err => {
+            console.error('Erreur lors de l\'envoi de la notification:', err);
+            res.status(500).json({ message: 'Erreur lors de l\'envoi de la notification' });
+        });
 });
 
 // Fonction pour démarrer l'envoi de notifications à intervalle régulier
