@@ -22,7 +22,7 @@ async function activateNotifications() {
             });
 
             // Envoyer l'abonnement au serveur
-            const response = await fetch('/api/subscribe', {
+            const response = await fetch('https://notification-0dn4.onrender.com/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(subscription)
@@ -44,7 +44,7 @@ async function activateNotifications() {
 async function deactivateNotifications() {
     if (subscriptionId) {
         try {
-            await fetch('/api/unsubscribe', {
+            await fetch('https://notification-0dn4.onrender.com/unsubscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: subscriptionId })
@@ -83,7 +83,7 @@ document.getElementById("turnOff").addEventListener("click", deactivateNotificat
 document.getElementById("testNotification").addEventListener("click", async () => {
     if (subscriptionId) {
         try {
-            const response = await fetch('/api/send-notification', {
+            const response = await fetch('https://notification-0dn4.onrender.com/send-notification', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: subscriptionId })
