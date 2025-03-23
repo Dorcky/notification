@@ -50,7 +50,8 @@ app.post('/send-notification', (req, res) => {
     
     const payload = JSON.stringify({
         title: "Rappel de sommeil",
-        body: "Il est temps d'aller se coucher !"
+        body: "Il est temps d'aller se coucher !",
+        // Ajoutez d'autres options si nécessaire
     });
 
     webPush.sendNotification(subscription.subscription, payload)
@@ -62,6 +63,31 @@ app.post('/send-notification', (req, res) => {
             res.status(500).json({ message: 'Erreur lors de l\'envoi de la notification' });
         });
 });
+
+// Modifiez également la fonction startNotificationInterval
+function startNotificationInterval(id) {
+    const sub = subscriptions.get(id);
+    if (!sub) return;
+    
+    sub.interval = setInterval(() => {
+        const payload = JSON.stringify({
+            title: "Rappel périodique",
+            body: `Rappel automatique - ${new Date().toLocaleTimeString()}`
+            // Les options de son sont gérées par le service worker
+        });
+
+        webPush.sendNotification(sub.subscription, payload)
+        .then(() => console.log(`Notification envoyée à ${id}`))
+        .catch(err => {
+            console.error(`Erreur d'envoi à ${id}:`, err);
+            if (err.statusCode === 410) {
+                console.log(`Abonnement ${id} n'est plus valide, suppression...`);
+                clearInterval(sub.interval);
+                subscriptions.delete(id);
+            }
+        });
+    }, 60000);
+}
 
 // Fonction pour démarrer l'envoi de notifications à intervalle régulier
 function startNotificationInterval(id) {
