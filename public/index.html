@@ -78,6 +78,14 @@
             background-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
+
+        .ad-container {
+    width: 100%;
+    max-width: 728px;
+    margin: 20px auto;
+    text-align: center;
+}
+
     </style>
 </head>
 <body>
@@ -89,19 +97,26 @@
     </div>
 
     <!-- Annonce Google AdSense -->
-    <div style="margin: 20px auto; text-align: center;">
+    <div class="ad-container">
         <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-3940256099942544" 
-        data-ad-slot="1234567890"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-   
-   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-   </script>
-   
-    </div>
+             style="display:inline-block;width:300px;height:250px"
+             data-ad-client="ca-pub-3940256099942544"
+             data-ad-slot="1234567890"></ins>
+    
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div> 
+    
+    <script>
+        window.onload = function () {
+            if (window.adsbygoogle) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } else {
+                console.error("Le script Google AdSense ne s'est pas chargé correctement.");
+            }
+        };
+    </script>   
 
     <script src="script.js"></script>
 </body>
