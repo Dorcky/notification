@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const webPush = require('web-push');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
+app.use(cors()); // Allow cross-origin requests
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the "public" directory
 
