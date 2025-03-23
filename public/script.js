@@ -78,11 +78,20 @@ function urlBase64ToUint8Array(base64String) {
 document.getElementById("turnOn").addEventListener("click", activateNotifications);
 document.getElementById("turnOff").addEventListener("click", deactivateNotifications);
 
+function playNotificationSound() {
+    const audio = new Audio('/notification-sound.mp3');
+    audio.play().catch(error => {
+        console.error('Impossible de jouer le son:', error);
+        // La plupart des navigateurs exigent une interaction utilisateur avant de jouer des sons
+    });
+}
+
 // Afficher les boutons en fonction de l'état des notifications
 // Dans script.js
 document.getElementById("testNotification").addEventListener("click", async () => {
     if (subscriptionId) {
         try {
+            playNotificationSound(); // Jouer le son manuellement
             const response = await fetch('https://notification-0dn4.onrender.com/send-notification', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -95,5 +104,12 @@ document.getElementById("testNotification").addEventListener("click", async () =
         }
     } else {
         alert("Activez d'abord les notifications!");
+    }
+});
+
+// Vous pourriez aussi l'appeler lors de la réception d'une notification quand la page est visible
+navigator.serviceWorker.addEventListener('message', event => {
+    if (event.data && event.data.type === 'NOTIFICATION_RECEIVED') {
+        playNotificationSound();
     }
 });
