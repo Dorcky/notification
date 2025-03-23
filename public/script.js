@@ -79,7 +79,7 @@ document.getElementById("turnOn").addEventListener("click", activateNotification
 document.getElementById("turnOff").addEventListener("click", deactivateNotifications);
 
 function playNotificationSound() {
-    const audio = new Audio('/notification-sound.mp3');
+    const audio = new Audio('/notification.mp3');
     audio.play().catch(error => {
         console.error('Impossible de jouer le son:', error);
         // La plupart des navigateurs exigent une interaction utilisateur avant de jouer des sons
